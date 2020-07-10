@@ -120,15 +120,80 @@
 
      --INSERT FACTURAS --
     INSERT INTO factura (id_factura, total, iva, vehiculo_id_vehiculo, cliente_id_cliente, fecha_de_ingreso, fecha_de_salida) 
-    VALUES (NULL, '500000', 11.5, '2', '2', NULL, NULL), (NULL, '230000', 11.5, '2', '2', NULL, NULL);
+    VALUES (NULL, '500000', 11.5, '2', '1', NULL, NULL), (NULL, '230000', 11.5, '2', '1', NULL, NULL);
 
     -- INSERT LIBRETA --
     INSERT INTO libreta (id_libreta, valor_mano_de_obra, mecanico_id_mecanico, factura_id_factura) 
-    VALUES (NULL, '60.000', '1', '1'), (NULL, '78.000', '1', '12');
+    VALUES (NULL, '60.000', '1', '1'), (NULL, '78.000', '1', '1');
 
     -- INSERT MANY TO MANY LIBRETA - REPUESTOS --
     INSERT INTO repuestos_has_libreta (id_respuestos_libreta, repuesto_id_repuesto, libreta_id_libreta) 
     VALUES (NULL, '1', '1'), (NULL, '2', '1'), (NULL, '2', '2');
+
+
+    -- SELECT INFO -- 
+
+    SELECT * FROM persona;
+    SELECT * FROM persona WHERE id_persona=1;
+
+    SELECT * FROM vehiculo;
+    SELECT * FROM vehiculo WHERE id_vehiculo=2;
+
+    SELECT * FROM cliente;
+    SELECT * FROM cliente WHERE id_cliente=1;
+    SELECT cliente.id_cliente, persona.nombres, persona.documento, persona.telefono, persona.direccion, 
+    vehiculo.marca, vehiculo.tipo 
+    FROM ((cliente 
+    INNER JOIN persona ON cliente.id_cliente=persona.id_persona)
+    INNER JOIN vehiculo ON cliente.id_cliente=vehiculo.id_vehiculo);
+
+    SELECT * FROM formacion;
+    SELECT * FROM formacion WHERE id_formacion=1;
+
+    SELECT * FROM mecanico;
+    SELECT * FROM mecanico WHERE id_mecanico=1;
+    SELECT mecanico.id_mecanico, persona.nombres, persona.documento, persona.telefono, persona.direccion,
+    formacion.profesion, formacion.experiencia
+    FROM ((mecanico
+    INNER JOIN persona ON mecanico.id_mecanico=persona.id_persona)
+    INNER JOIN formacion ON mecanico.id_mecanico=formacion.id_formacion);
+
+    SELECT * FROM especialidad;
+    SELECT * FROM especialidad WHERE id_especialidad=1;
+
+    SELECT * FROM mecanico_has_especialidad;
+    SELECT * FROM mecanico_has_especialidad WHERE mecanico_id_mecanico=1;
+
+
+    
+    SELECT * FROM repuesto;
+    SELECT * FROM repuesto WHERE id_repuesto=2;
+
+    SELECT * FROM factura;
+    SELECT * FROM factura WHERE id_factura=2;
+    SELECT factura.id_factura, persona.nombres, persona.documento, persona.telefono, persona.direccion, 
+    vehiculo.marca, vehiculo.tipo 
+    FROM ((factura 
+    INNER JOIN persona ON factura.cliente_id_cliente=persona.id_persona)
+    INNER JOIN vehiculo ON factura.vehiculo_id_vehiculo=vehiculo.id_vehiculo);
+    
+    SELECT * FROM libreta;
+    SELECT * FROM libreta WHERE id_libreta=2;
+    SELECT libreta.id_libreta, persona.nombres,  
+    factura.id_factura 
+    FROM ((libreta 
+    INNER JOIN persona ON libreta.mecanico_id_mecanico=persona.id_persona)
+    INNER JOIN factura ON libreta.factura_id_factura=factura.id_factura);
+
+    SELECT * FROM repuestos_has_libreta;
+    SELECT * FROM repuestos_has_libreta WHERE id_respuestos_libreta=2;
+
+
+
+
+    
+
+
 
 
 
